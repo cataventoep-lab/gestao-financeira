@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  logo      String?  @db.Text // Logo em Base64 ou URL
+  users     User[]
+  categories Category[]
+  transactions Transaction[]
+  creditCards CreditCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String
+  avatar    String?  @db.Text // Avatar em Base64 ou URL
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  type      String   // 'entrada' ou 'saida'
+  icon      String   @default("🏷️")
+  color     String   @default("#1E7A62")
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id])
+  transactions Transaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id            String   @id @default(uuid())
+  type          String   // 'entrada' ou 'saida'
+  description   String
+  amount        Float
+  date          DateTime // Data do pagamento ou recebimento
+  dueDate       DateTime? // Vencimento (aplica-se a contas a pagar)
+  area          String   @default("fisico") // 'fisico' ou 'digital'
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id])
+  paymentMethod String   @default("Outro")
+  status        String   // 'recebida', 'a_receber', 'paga', 'pendente', 'vencida'
+  obs           String?  @db.Text
+
+  creditCardId  String?
+  creditCard    CreditCard? @relation(fields: [creditCardId], references: [id])
+
+  // Recurrence
+  seriesId      String?
+  seriesFreq    String?
+  seriesEnd     DateTime?
+
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CreditCard {
+  id         String   @id @default(uuid())
+  name       String
+  closingDay Int
+  dueDay     Int
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id])
+  transactions Transaction[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
