@@ -3,8 +3,8 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { IconMail, IconLock, IconEye, IconEyeOff } from "@/components/Icons";
+import { LogoCatavento } from "@/components/Logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,14 +35,7 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="login-card">
         <div className="login-head">
           <div className="login-logo">
-            <Image 
-              src="/logo.png" 
-              alt="Catavento espaço pedagógico" 
-              width={180} 
-              height={90} 
-              style={{ width: "100%", height: "auto", objectFit: "contain" }}
-              priority 
-            />
+            <LogoCatavento />
           </div>
           <div className="login-divider"></div>
           <h2>Controle Financeiro</h2>
