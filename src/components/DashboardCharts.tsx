@@ -73,11 +73,11 @@ function BarChartSVG({ series }: { series: any[] }) {
 }
 
 export function DashboardCharts({ allTransactions, doMes, baseDate }: { allTransactions: any[], doMes: any[], baseDate: Date }) {
-  // Chart 1: Last 6 months
+  // Chart 1: Last 4 months
   const series = [];
   const MESES_CURTOS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 3; i >= 0; i--) {
     const ref = new Date(baseDate);
     const d = new Date(ref.getFullYear(), ref.getMonth() - i, 1);
     const targetYear = d.getFullYear();
@@ -128,7 +128,7 @@ export function DashboardCharts({ allTransactions, doMes, baseDate }: { allTrans
       <div className="card card-pad">
         <div className="section-head">
           <h2>Entradas e saídas</h2>
-          <span className="small muted">Últimos 6 meses</span>
+          <span className="small muted">Últimos 4 meses</span>
         </div>
         <BarChartSVG series={series} />
         <div className="legend" style={{ marginTop: "12px" }}>
