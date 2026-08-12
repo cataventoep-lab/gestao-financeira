@@ -32,6 +32,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   };
   if (area) whereMes.area = area;
 
+  const whereAll: any = { companyId: session.user.companyId };
+  if (area) whereAll.area = area;
+
   const [doMes, allTransactions] = await Promise.all([
     prisma.transaction.findMany({
       where: whereMes,
