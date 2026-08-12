@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { IconMail, IconLock, IconEye, IconEyeOff } from "@/components/Icons";
 
 export default function LoginPage() {
@@ -34,7 +35,14 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="login-card">
         <div className="login-head">
           <div className="login-logo">
-            <img src="/logo.png" alt="Catavento espaço pedagógico" />
+            <Image 
+              src="/logo.png" 
+              alt="Catavento espaço pedagógico" 
+              width={180} 
+              height={90} 
+              style={{ width: "100%", height: "auto", objectFit: "contain" }}
+              priority 
+            />
           </div>
           <div className="login-divider"></div>
           <h2>Controle Financeiro</h2>
