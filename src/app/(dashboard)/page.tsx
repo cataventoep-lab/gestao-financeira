@@ -110,7 +110,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
       </div>
 
-      <DashboardCharts allTransactions={allTransactions} doMes={doMes} baseDate={firstDay} />
+      <DashboardCharts allTransactions={allTransactions} doMes={doMes} baseDate={today} />
 
       <div className="section split">
         <div className="card">
