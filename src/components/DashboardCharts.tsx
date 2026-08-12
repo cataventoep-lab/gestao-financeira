@@ -66,19 +66,29 @@ export function DashboardCharts({ allTransactions, doMes, baseDate }: { allTrans
   const MESES_CURTOS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
   
   for (let i = 5; i >= 0; i--) {
-    const d = new Date(baseDate.getFullYear(), baseDate.getMonth() - i, 1);
-    const ini = new Date(d.getFullYear(), d.getMonth(), 1).getTime();
-    const fim = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59).getTime();
+    const ref = new Date(baseDate);
+    const d = new Date(ref.getFullYear(), ref.getMonth() - i, 1);
+    const targetYear = d.getFullYear();
+    const targetMonth = d.getMonth();
     
     const txsMes = allTransactions.filter(t => {
-      const dt = new Date(t.date).getTime();
-      return dt >= ini && dt <= fim;
+      if (!t.date) return false;
+      const dt = new Date(t.date);
+      // Match by year and month using UTC to prevent timezone shifts
+      const y = dt.getUTCFullYear();
+      const m = dt.getUTCMonth();
+      return y === targetYear && m === targetMonth;
     });
     
-    const entradas = txsMes.filter(t => t.type === 'entrada' && t.status === 'recebida').reduce((a, c) => a + c.amount, 0);
-    const saidas = txsMes.filter(t => t.type === 'saida' && t.status === 'paga').reduce((a, c) => a + c.amount, 0);
+    const entradas = txsMes
+      .filter(t => t.type === 'entrada' && t.status === 'recebida')
+      .reduce((a, c) => a + Number(c.amount || 0), 0);
+
+    const saidas = txsMes
+      .filter(t => t.type === 'saida' && t.status === 'paga')
+      .reduce((a, c) => a + Number(c.amount || 0), 0);
     
-    series.push({ rotulo: MESES_CURTOS[d.getMonth()], entradas, saidas });
+    series.push({ rotulo: MESES_CURTOS[targetMonth], entradas, saidas });
   }
 
   // Chart 2: Despesas por categoria do mês
