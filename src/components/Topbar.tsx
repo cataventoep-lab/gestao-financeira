@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IconPlus } from "./Icons";
 import { TransactionModal } from "./TransactionModal";
@@ -9,11 +9,23 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  const currentMonth = searchParams.get("month") || "";
-  const currentArea = searchParams.get("area") || "";
+  const urlMonth = searchParams.get("month") || "";
+  const urlArea = searchParams.get("area") || "";
+
+  const [currentMonth, setCurrentMonth] = useState(urlMonth);
+  const [currentArea, setCurrentArea] = useState(urlArea);
+
+  useEffect(() => {
+    setCurrentMonth(urlMonth);
+  }, [urlMonth]);
+
+  useEffect(() => {
+    setCurrentArea(urlArea);
+  }, [urlArea]);
 
   const generateMonths = () => {
     const months = [];
@@ -28,10 +40,16 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   };
 
   const setParam = (key: string, val: string) => {
+    if (key === "month") setCurrentMonth(val);
+    if (key === "area") setCurrentArea(val);
+
     const params = new URLSearchParams(searchParams.toString());
     if (val) params.set(key, val);
     else params.delete(key);
-    router.push(`${pathname}?${params.toString()}`);
+
+    startTransition(() => {
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    });
   };
 
   useEffect(() => {
