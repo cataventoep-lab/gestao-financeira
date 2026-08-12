@@ -452,6 +452,7 @@ table.tb tfoot td { padding: 12px; font-weight: 650; border-top: 1px solid var(-
   .split { grid-template-columns: 1fr; }
   .grid-3 { grid-template-columns: 1fr; }
   .content { padding: 14px 12px 96px; }
+  .chart { min-height: 260px; }
   
   /* KPIs em 2 colunas no Mobile para melhor aproveitamento de espaço */
   .kpis {

@@ -19,13 +19,13 @@ function escalaRedonda(pico: number) {
 }
 
 function BarChartSVG({ series }: { series: any[] }) {
-  const W = 660, H = 250;
-  const mL = 60, mR = 10, mT = 24, mB = 34;
+  const W = 500, H = 280;
+  const mL = 54, mR = 12, mT = 28, mB = 36;
   const iw = W - mL - mR, ih = H - mT - mB;
   const pico = Math.max(1, ...series.map(s => Math.max(s.entradas, s.saidas)));
   const max = escalaRedonda(pico);
   const passo = iw / series.length;
-  const bw = Math.min(30, passo * 0.30);
+  const bw = Math.min(38, passo * 0.36);
   const base = mT + ih;
 
   return (
@@ -35,36 +35,36 @@ function BarChartSVG({ series }: { series: any[] }) {
         return (
           <g key={`grid-${g}`}>
             <line x1={mL} y1={y} x2={W - mR} y2={y} stroke="var(--line-2)" strokeWidth="1" />
-            <text x={mL - 9} y={y + 4} textAnchor="end" fontSize="12" fill="var(--muted)">{curto(max / 4 * g)}</text>
+            <text x={mL - 8} y={y + 4} textAnchor="end" fontSize="12.5" fill="var(--muted)">{curto(max / 4 * g)}</text>
           </g>
         );
       })}
       <line x1={mL} y1={base} x2={W - mR} y2={base} stroke="var(--line)" strokeWidth="1" />
       {series.map((s, i) => {
         const cx = mL + passo * i + passo / 2;
-        const hE = Math.max((s.entradas / max) * ih, s.entradas > 0 ? 2 : 0);
-        const hS = Math.max((s.saidas / max) * ih, s.saidas > 0 ? 2 : 0);
+        const hE = Math.max((s.entradas / max) * ih, s.entradas > 0 ? 3 : 0);
+        const hS = Math.max((s.saidas / max) * ih, s.saidas > 0 ? 3 : 0);
         return (
           <g key={`bar-${i}`}>
-            <rect x={cx - bw - 3} y={base - hE} width={bw} height={hE} rx="3" fill="var(--pos)">
+            <rect x={cx - bw - 4} y={base - hE} width={bw} height={hE} rx="4" fill="var(--pos)">
               <title>Entradas {s.rotulo}: {brl(s.entradas)}</title>
             </rect>
             {s.entradas > 0 && (
-              <text x={cx - bw / 2 - 3} y={Math.max(base - hE - 5, 15)} textAnchor="middle" fontSize="10.5" fontWeight="650" fill="var(--pos)">
+              <text x={cx - bw / 2 - 4} y={Math.max(base - hE - 6, 16)} textAnchor="middle" fontSize="12" fontWeight="700" fill="var(--pos)">
                 {curto(s.entradas)}
               </text>
             )}
 
-            <rect x={cx + 3} y={base - hS} width={bw} height={hS} rx="3" fill="var(--neg)">
+            <rect x={cx + 4} y={base - hS} width={bw} height={hS} rx="4" fill="var(--neg)">
               <title>Saídas {s.rotulo}: {brl(s.saidas)}</title>
             </rect>
             {s.saidas > 0 && (
-              <text x={cx + bw / 2 + 3} y={Math.max(base - hS - 5, 15)} textAnchor="middle" fontSize="10.5" fontWeight="650" fill="var(--neg)">
+              <text x={cx + bw / 2 + 4} y={Math.max(base - hS - 6, 16)} textAnchor="middle" fontSize="12" fontWeight="700" fill="var(--neg)">
                 {curto(s.saidas)}
               </text>
             )}
 
-            <text x={cx} y={base + 21} textAnchor="middle" fontSize="13" fill="var(--ink-2)">{s.rotulo}</text>
+            <text x={cx} y={base + 23} textAnchor="middle" fontSize="14" fontWeight="600" fill="var(--ink-2)">{s.rotulo}</text>
           </g>
         );
       })}
