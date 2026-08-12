@@ -19,8 +19,8 @@ function escalaRedonda(pico: number) {
 }
 
 function BarChartSVG({ series }: { series: any[] }) {
-  const W = 660, H = 240;
-  const mL = 60, mR = 10, mT = 12, mB = 34;
+  const W = 660, H = 250;
+  const mL = 60, mR = 10, mT = 24, mB = 34;
   const iw = W - mL - mR, ih = H - mT - mB;
   const pico = Math.max(1, ...series.map(s => Math.max(s.entradas, s.saidas)));
   const max = escalaRedonda(pico);
@@ -49,9 +49,21 @@ function BarChartSVG({ series }: { series: any[] }) {
             <rect x={cx - bw - 3} y={base - hE} width={bw} height={hE} rx="3" fill="var(--pos)">
               <title>Entradas {s.rotulo}: {brl(s.entradas)}</title>
             </rect>
+            {s.entradas > 0 && (
+              <text x={cx - bw / 2 - 3} y={Math.max(base - hE - 5, 15)} textAnchor="middle" fontSize="10.5" fontWeight="650" fill="var(--pos)">
+                {curto(s.entradas)}
+              </text>
+            )}
+
             <rect x={cx + 3} y={base - hS} width={bw} height={hS} rx="3" fill="var(--neg)">
               <title>Saídas {s.rotulo}: {brl(s.saidas)}</title>
             </rect>
+            {s.saidas > 0 && (
+              <text x={cx + bw / 2 + 3} y={Math.max(base - hS - 5, 15)} textAnchor="middle" fontSize="10.5" fontWeight="650" fill="var(--neg)">
+                {curto(s.saidas)}
+              </text>
+            )}
+
             <text x={cx} y={base + 21} textAnchor="middle" fontSize="13" fill="var(--ink-2)">{s.rotulo}</text>
           </g>
         );
