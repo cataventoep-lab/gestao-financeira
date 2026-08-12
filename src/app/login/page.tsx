@@ -45,16 +45,16 @@ export default function LoginPage() {
         {error && <div className="badge b-neg" style={{ whiteSpace: "normal", textAlign: "center", marginBottom: "16px", padding: "8px 12px", width: "100%", justifyContent: "center" }}>{error}</div>}
 
         <div className="field" style={{ marginBottom: "16px" }}>
-          <label htmlFor="email" style={{ color: "#1A2E44", fontWeight: 600 }}>E-mail</label>
+          <label htmlFor="email" style={{ color: "#1A2E44", fontWeight: 600 }}>Usuário / E-mail</label>
           <div className="input-icon-wrap">
             <IconMail />
             <input 
-              type="email" 
+              type="text" 
               id="email" 
               className="input" 
               value={email} 
               onChange={e => setEmail(e.target.value)} 
-              placeholder="Digite seu e-mail"
+              placeholder="Digite seu usuário ou e-mail"
               required 
             />
           </div>
